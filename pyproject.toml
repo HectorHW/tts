@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "tts"
+version = "0.1.0"
+description = ""
+authors = ["Hector Hanshew <github@hectorhw.net>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "~3.11"
+silero = "^0.4.1"
+numpy = "^2.0.1"
+pydub = "^0.25.1"
+
+
+[tool.poetry.group.notebook.dependencies]
+ipykernel = "^6.29.5"
+ipython = "^8.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
