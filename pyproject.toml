@@ -7,16 +7,34 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "~3.11"
-silero = "^0.4.1"
-numpy = "^2.0.1"
-pydub = "^0.25.1"
-
+python = "^3.11"
 
 [tool.poetry.group.notebook.dependencies]
 ipykernel = "^6.29.5"
 ipython = "^8.26.0"
 
+[tool.poetry.group.server.dependencies]
+fastapi = {extras = ["standard"], version = "^0.112.0"}
+numpy = "^2.0.1"
+silero = "^0.4.1"
+pydub = "^0.25.1"
+environs = "^11.0.0"
+
+[tool.poetry.group.client.dependencies]
+pydub = "^0.25.1"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+ruff = "^0.5.7"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D"]
