@@ -11,14 +11,14 @@ env.read_env()
 API_TOKEN: str = env("API_TOKEN")
 API_URL: str = env("API_URL", "http://0.0.0.0:8000")
 
-Mp3Bytes = bytes
+WavBytes = bytes
 
 
 class ApiError(Exception):
     pass
 
 
-def text_to_speach(value: str) -> Mp3Bytes:
+def text_to_speach(value: str) -> WavBytes:
     response = httpx.post(
         API_URL,
         headers={"Authorization": f"Bearer {API_TOKEN}"},
