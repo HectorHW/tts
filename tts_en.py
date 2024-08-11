@@ -30,8 +30,8 @@ def text_to_speach(value: str) -> Mp3Bytes:
 
 
 def say_given_text(value: str) -> None:
-    mp3 = text_to_speach(value)
-    segment = AudioSegment.from_mp3(io.BytesIO(mp3))
+    wav = text_to_speach(value)
+    segment = AudioSegment.from_wav(io.BytesIO(wav))
     play(segment)
 
 

@@ -47,9 +47,9 @@ def say_given_text(value: str, output_path: str) -> None:
     model.save_wav(ssml_text=ssml, speaker="en_51", audio_path=output_path)
 
 
-def convert_to_in_memory_mp3(segment: pydub.AudioSegment) -> bytes:
+def get_wav_data(segment: pydub.AudioSegment) -> bytes:
     buffer = io.BytesIO()
-    segment.export(buffer, format="mp3")
+    segment.export(buffer, format="wav")
     return buffer.getvalue()
 
 
@@ -63,5 +63,5 @@ def text_to_speach(payload: TTSPayload) -> fastapi.Response:
     with tempfile.NamedTemporaryFile(suffix=".wav") as file:
         file.close()
         say_given_text(payload.text, file.name)
-        mp3_data = convert_to_in_memory_mp3(pydub.AudioSegment.from_wav(file.name))
-        return fastapi.Response(content=mp3_data, media_type="audio/mp3")
+        wav_data = get_wav_data(pydub.AudioSegment.from_wav(file.name))
+        return fastapi.Response(content=wav_data, media_type="audio/wav")
