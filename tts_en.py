@@ -1,27 +1,39 @@
-import silero
+import io
+
+import environs
+import httpx
 from pydub import AudioSegment
 from pydub.playback import play
-import pathlib
 
-model, _ = silero.silero_tts(language="en", speaker="v3_en")
+env = environs.Env()
+env.read_env()
 
-tmpdir = pathlib.Path.home() / ".tts"
-tmpdir.mkdir(exist_ok=True)
+API_TOKEN: str = env("API_TOKEN")
+API_URL: str = env("API_URL", "http://0.0.0.0:8000")
 
-output_file = tmpdir / "output.wav"
+Mp3Bytes = bytes
+
+
+class ApiError(Exception):
+    pass
+
+
+def text_to_speach(value: str) -> Mp3Bytes:
+    response = httpx.post(
+        API_URL,
+        headers={"Authorization": f"Bearer {API_TOKEN}"},
+        json={"text": value},
+    )
+    if response.status_code != httpx.codes.OK:
+        raise ApiError(response.text)
+    return response.content
 
 
 def say_given_text(value: str) -> None:
-    ssml = f"""
-    <speak>
-    {value}
-    <break time="100ms" />
-    </speak>"""
+    mp3 = text_to_speach(value)
+    segment = AudioSegment.from_mp3(io.BytesIO(mp3))
+    play(segment)
 
-    model.save_wav(ssml_text=ssml, speaker=f"en_51", audio_path=str(output_file))
-
-    mysong = AudioSegment.from_wav(output_file)
-    play(mysong)
 
 input_buffer = ""
 
